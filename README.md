@@ -15,3 +15,8 @@ Instrucciones para correr el proyecto:
 7. La autorizacion es = galileo24
 8. Teniendo esto en cuenta ya podremos hacer uso de los otros 2 
     metodos: GET Y DELETE
+
+Actualizacion 1.1
+
+9. Se cambio la configuracion al puerto 3001, esto para que no haya incoveniente al momento de levantar la app principal
+10. Se actualizaron los status de cada peticion para que el usuario pueda interpretar de mejor manera la respueta por parte del servidor. 

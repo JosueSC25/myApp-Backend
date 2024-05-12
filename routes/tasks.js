@@ -12,18 +12,22 @@ router.post('/addTask',function(req,res,next){
     if(req.body && req.body.name && req.body.description && req.body.dueDate){
         req.body.id=timestap.toString();
         tasks.push(req.body);
+        res.status(200).json(tasks);
+    }else{
+        res.status(400).json({error:"No se esta enviando los parametros establecidos"});
     }
-    res.json(tasks);
+    
 })
 
-router.delete('/removeTask/:id',function(req,res,next){
+router.delete('/removeTask/:id', function(req, res, next) {
     if(req.params && req.params.id){
-        let id = req.params.id;
-        tasks = tasks.filter(task=> task.id !== id);
-        res.json(tasks);
-    }else{
-        res.json([{}]);
-    }
-})
+        let id= req.params.id;
+        tasks = tasks.filter(task => task.id !== id);
+        res.status(200).json(tasks)
+    }else {
+        res.status(400).json({error:"No hay ninguna tarea con ese ID"})
+    } 
+});
+
 
 module.exports = router;

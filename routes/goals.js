@@ -12,18 +12,24 @@ router.post('/addGoals',function(req,res,next){
     if(req.body && req.body.name && req.body.description && req.body.dueDate){
         req.body.id=timestap.toString();
         goals.push(req.body);
+        res.status(200).json(goals);
+    }else{
+        res.status(400).json({error:"No se esta enviando los parametros establecidos"});
     }
-    res.json(goals);
+    
 })
 
 router.delete('/removeGoals/:id',function(req,res,next){
-    if(req.params && req.params.id){
-        let id = req.params.id;
-        goals = goals.filter(goal=> goal.id !== id);
-        res.json(goals);
-    }else{
-        res.json([{}]);
-    }
-})
+if (!req.params.id) {
+    return res.status(400).json({ error: "Se requiere un ID válido para eliminar la tarea." });
+}
+const id = req.params.id;
+const index = goals.findIndex(goal => goal.id === id);
+if (index === -1) {
+    return res.status(400).json({ error: "No se encontró ninguna meta con ese ID." });
+}
+goals.splice(index, 1);
+res.status(200).json({ message: "Meta eliminada exitosamente.", goals });
+});
 
 module.exports = router;
