@@ -20,3 +20,8 @@ Actualizacion 1.1
 
 9. Se cambio la configuracion al puerto 3001, esto para que no haya incoveniente al momento de levantar la app principal
 10. Se actualizaron los status de cada peticion para que el usuario pueda interpretar de mejor manera la respueta por parte del servidor. 
+
+Actualizacion 1.2 "Conexion base de datos"
+
+11. Se creo la conexion a la base de datos MongoDB
+12. Se modifico el codigo para que tanto las tasks como las goals hagan la query a la base de datos.

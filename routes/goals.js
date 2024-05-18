@@ -1,18 +1,27 @@
 var express = require('express');
 var router = express.Router();
+const mongoose = require('mongoose');
+
+const goalInit = mongoose.model('goals',{
+    name:String,
+    description:String,
+    dueDate:String
+},'goals');
 
 let goals =[];
 
 router.get('/getGoals',function(req,res,next){
-    res.json(goals);
+    goalInit.find({}).then((response)=>
+        res.status(200).json(response)
+    ).catch((err)=>res.status(500).json(err));
 })
 
 router.post('/addGoals',function(req,res,next){
-    let timestap = Date.now() + Math.random();
     if(req.body && req.body.name && req.body.description && req.body.dueDate){
-        req.body.id=timestap.toString();
-        goals.push(req.body);
-        res.status(200).json(goals);
+        const goal = new goalInit(req.body);
+        goal.save().then(()=>
+            res.status(200).json({'respuesta':'Meta registrada'})
+        ).catch((err)=>res.status(500).json(err));
     }else{
         res.status(400).json({error:"No se esta enviando los parametros establecidos"});
     }
@@ -20,16 +29,14 @@ router.post('/addGoals',function(req,res,next){
 })
 
 router.delete('/removeGoals/:id',function(req,res,next){
-if (!req.params.id) {
-    return res.status(400).json({ error: "Se requiere un ID válido para eliminar la tarea." });
-}
-const id = req.params.id;
-const index = goals.findIndex(goal => goal.id === id);
-if (index === -1) {
-    return res.status(400).json({ error: "No se encontró ninguna meta con ese ID." });
-}
-goals.splice(index, 1);
-res.status(200).json({ message: "Meta eliminada exitosamente.", goals });
+    if(req.params && req.params.id){
+        let id= req.params.id;
+        goalInit.deleteOne({_id:new mongoose.Types.ObjectId(id)}).then((response)=>{
+                res.status(200).json(response)
+        }).catch(err=>res.status(500).json(err));
+    }else {
+        res.status(400).json({error:"No hay ninguna Meta con ese ID"})
+    } 
 });
 
 module.exports = router;
